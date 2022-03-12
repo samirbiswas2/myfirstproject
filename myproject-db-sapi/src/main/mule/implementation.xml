@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<sub-flow name="getEmployeeSub_Flow" doc:id="1cfb5c2c-5976-44ce-9df2-5eb2c8e06ba5" >
+		<db:select doc:name="Select" doc:id="320c349a-114f-4625-8128-1681da265c50" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from employee]]></db:sql>
+		</db:select>
+	</sub-flow>
+	<sub-flow name="getEmployeeByEmpIdSub_Flow" doc:id="5cfd935f-6eae-4baf-b99c-87fb067b34b3" >
+		<db:select doc:name="Select" doc:id="14abb178-5476-4175-99bd-ee2fe112da79" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from employee where empid = :empid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	empid : vars.empid
+}]]]></db:input-parameters>
+		</db:select>
+	</sub-flow>
+	<sub-flow name="deleteEmployeeByEmpIdSub_Flow" doc:id="69509e8a-bbbc-4e16-909d-c9f07943ff0a" >
+		<db:delete doc:name="Delete" doc:id="1ae60347-b0bc-4be9-8079-c958238c0f2e" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from employee where empid = :empid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	empid : vars.empid
+}]]]></db:input-parameters>
+		</db:delete>
+	</sub-flow>
+	<sub-flow name="deleteEmployeeSub_Flow" doc:id="0f793bb6-0b1b-4a09-884f-831c3f9a84a3" >
+		<db:delete doc:name="Delete" doc:id="65a5ff0a-6b6b-4cd6-bc2f-28b57b4e5e7f" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from employee]]></db:sql>
+		</db:delete>
+	</sub-flow>
+	<sub-flow name="updateSub_Flow" doc:id="1d66d8c6-f3ce-43ec-833b-3c356b0be7ad" >
+		<db:select doc:name="Select" doc:id="164b176e-0147-4616-adb7-1ce32c0fa889" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from employee]]></db:sql>
+		</db:select>
+	</sub-flow>
+	<sub-flow name="insertEmployeeSub_Flow" doc:id="7fb8e77d-f0e9-46e3-873a-3e14acdc9368" >
+		<db:insert doc:name="Insert" doc:id="ad4d804f-4e66-4138-b508-d23174b3329e" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into employee (empid, first_name, last_name, email_id, mobile, address, domain ) values (:empid, :firstname, :lastname, :email, :mobile, :address, :domain)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	empid : payload.empid,
+	firstname : payload.firstname,
+	lastname : payload.lastname,
+	email : payload.email,
+	mobile : payload.mobile,
+	address : payload.address,
+	domain : payload.domain
+	
+}]]]></db:input-parameters>
+		</db:insert>
+	</sub-flow>
+</mule>
